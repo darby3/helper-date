@@ -48,11 +48,17 @@ module.exports = function dateHelper(str, pattern, options) {
     var res = moment(str);
     for (var key in options.hash) {
       if (typeof res[key] === 'function') {
-        return res[key](options.hash[key]);
+        if (key==="format") {
+          continue;
+        }
+
+        res = res[key](options.hash[key]);
       } else {
         console.error('moment.js does not support "' + key + '"');
       }
     }
+
+    return res.format(options.hash['format']);
   }
 
   if (utils.isObject(str)) {
